@@ -1,0 +1,13 @@
+{% include 'snippets/header.html' %}
+
+
+<h2> Yani blog yaratmoq </h2>
+{{user}}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+
+
+{% include 'snippets/footer.html' %}

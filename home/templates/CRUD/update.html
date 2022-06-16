@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<br>
+<p>
+    <br>
+<p></p>
+<br>
+<p></p>
+<br>
+<br>
+<p>
+    <br>
+
+<div class="post-entry">
+    <h1>Edit Blog News</h1>
+    <form action ="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Update" />
+    </form>
+</div>
+
+{% endblock %}
