@@ -5,6 +5,7 @@ from django.db import models
 # Create your models here.
 from django.urls import reverse
 
+from Blogs import settings
 from accounts.models import Account
 
 
@@ -57,3 +58,16 @@ class HomeArticleModel(models.Model):
         except:
             url = ''
         return url
+
+
+class ReviewsModel(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='comment', on_delete=models.SET_NULL, null=True)
+    text = models.TextField('Comment', max_length=5000)
+    article = models.ForeignKey(HomeArticleModel, verbose_name='Film', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.article)
+
+    # class Meta:
+    #     verbose_name = "Comment"
+    #     verbose_name_plural = "Comment"

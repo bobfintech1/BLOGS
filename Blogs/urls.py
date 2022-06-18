@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from accounts.views import registration_view, home_view, account_login, signout, edit_account_view
-from home.views import home_list
+from home.views import home_list, AddReview
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,6 +29,8 @@ urlpatterns = [
     path('register/', registration_view, name='register'),
     path('update/<int:pk>', edit_account_view, name='update'),
     path('logout/', signout, name='signout'),
+    path('review/<int:pk>', AddReview.as_view(), name='add_commit'),
+
 
 
 

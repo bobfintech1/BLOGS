@@ -1,9 +1,11 @@
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views import View
 from django.views.generic import ListView
 from accounts.models import Account
 from home.models import HomeArticleModel, HomeCarouselModel
-from home.forms import CreateHomeForm, CreateCarouselForm
+from home.forms import CreateHomeForm, ReviewsFrom
 
 
 #
@@ -14,7 +16,7 @@ from home.forms import CreateHomeForm, CreateCarouselForm
 
 #
 
-def home_list(request):
+def home_list(request,):
     context = {}
     home1 = HomeArticleModel.objects.all()
     home = HomeCarouselModel.objects.all()
@@ -25,6 +27,16 @@ def home_list(request):
     }
 
     return render(request, "home.html", context)
+
+
+def paginate(request):
+    contact_list = HomeArticleModel.objects.all()
+    paginator = Paginator(contact_list, 1)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'paginate.html', {'page_obj': page_obj})
+
 
 
 def home_create(request):
@@ -96,3 +108,31 @@ def edit_home_view(request, pk):
 
     context['form'] = form
     return render(request, 'CRUD/update.html', context)
+
+
+
+
+class AddReview(View):
+
+
+    # def post(self, request, pk):
+    #     print(request.POST)
+    #     return redirect('/')
+
+    # def post(self, request, pk):
+    #     form = ReviewsFrom(request.POST)
+    #     if form.is_valid():
+    #         form = form.save(commit=False)
+    #         form.article_id = pk
+    #         form.save()
+    #     return redirect('/')
+
+
+    def post(self, request, pk):
+        form = ReviewsFrom(request.POST)
+        article = HomeArticleModel.objects.get(pk=pk)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.article = article
+            form.save()
+        return redirect('/')
