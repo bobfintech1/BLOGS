@@ -5,6 +5,7 @@ from django.db import models
 # Create your models here.
 from django.urls import reverse
 
+import accounts
 from Blogs import settings
 from accounts.models import Account
 
@@ -43,6 +44,7 @@ class HomeArticleModel(models.Model):
     title = models.CharField(max_length=250)
     body = models.TextField()
     image = models.ImageField(upload_to=upload_location, null=True, blank=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return str(self.title)
@@ -66,7 +68,7 @@ class ReviewsModel(models.Model):
     article = models.ForeignKey(HomeArticleModel, verbose_name='Film', on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.article)
+        return str(self.author) and str(self.article)
 
     # class Meta:
     #     verbose_name = "Comment"

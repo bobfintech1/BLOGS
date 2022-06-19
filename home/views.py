@@ -5,7 +5,7 @@ from django.views import View
 from django.views.generic import ListView
 from accounts.models import Account
 from home.models import HomeArticleModel, HomeCarouselModel
-from home.forms import CreateHomeForm, ReviewsFrom
+from home.forms import CreateHomeForm, ReviewsFrom, HomeDeleteForm
 
 
 #
@@ -55,6 +55,7 @@ def home_create(request):
                 return Account.DoesNotExist
             obj.author = author
             obj.save()
+            return redirect("home")
         # messages.success(request, f'Ссылка добавлена')
     else:
         instance = CreateHomeForm()
@@ -86,9 +87,8 @@ def edit_home_view(request, pk):
         return redirect('accounts:login')
 
     home_post = get_object_or_404(HomeArticleModel, pk=pk)
-
-    # if blog_post.author != user:
-    #     return HttpResponse('You are not the author of that post.')
+    if home_post.author != user:
+        return HttpResponse('NOT REGISTOR')
 
     if request.POST:
         form = CreateHomeForm(request.POST or None, request.FILES or None, instance=home_post)
@@ -97,7 +97,7 @@ def edit_home_view(request, pk):
             obj.save()
             context['success_message'] = "Updated"
             blog_post = obj
-            return redirect("home:home_blog")
+            return redirect("home")
     form = CreateHomeForm(
         initial={
             'title': home_post.title,
@@ -108,6 +108,39 @@ def edit_home_view(request, pk):
 
     context['form'] = form
     return render(request, 'CRUD/update.html', context)
+
+
+def delete_home_view(request, pk):
+    context = {}
+
+
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('accounts:login')
+
+    home_blog = get_object_or_404(HomeArticleModel, pk=pk)
+    if home_blog.author != user:
+        return HttpResponse('NOT REGISTOR')
+
+    if request.POST:
+        form = HomeDeleteForm(request.POST or None, request.FILES or None, instance=home_blog)
+        if form.is_valid():
+            obj = form.save(commit=True)
+            obj.delete()
+            context['success_message'] = "Delete"
+            return redirect("home")
+    form = HomeDeleteForm(
+        initial={
+            'title': home_blog.title,
+            'body': home_blog.body,
+            'image': home_blog.image,
+        }
+    )
+
+    context['form'] = form
+    return render(request, "CRUD/delete.html", context)
+
+
 
 
 

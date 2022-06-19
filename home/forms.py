@@ -21,3 +21,9 @@ class ReviewsFrom(forms.ModelForm):
     class Meta:
         model = ReviewsModel
         fields = ['text']
+
+
+class HomeDeleteForm(forms.ModelForm):
+    class Meta:
+        model = HomeArticleModel
+        fields = ['title', "body", "image"]

@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from accounts.views import registration_view, home_view, account_login, signout, edit_account_view
-from home.views import home_list, AddReview
+from home.views import home_list, AddReview, delete_home_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),

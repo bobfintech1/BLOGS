@@ -10,7 +10,9 @@ urlpatterns = [
     path('detail-home/<int:pk>', detail_home_view, name='detail'),
     path('detail/<int:pk>', detail_home_carousel, name='detail_carousel'),
     path('update/<int:pk>', edit_home_view, name='update_carousel'),
-    path('paginate/', paginate, name='paginate')
+    path('paginate/', paginate, name='paginate'),
+    path('delete/<int:pk>', delete_home_view, name='delete'),
+
 
     # path('home_main/', home_main, name='home_main'),
 ]
