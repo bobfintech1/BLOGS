@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView
 from accounts.models import Account
-from home.models import HomeArticleModel, HomeCarouselModel
+from home.models import HomeArticleModel, HomeCarouselModel, ReviewsModel
 from home.forms import CreateHomeForm, ReviewsFrom, HomeDeleteForm
 
 
@@ -62,14 +62,31 @@ def home_create(request):
 
     return render(request, 'CRUD/create.html', {'form': instance})
 
-
 def detail_home_view(request, pk):
-    context = {}
     blog_post = get_object_or_404(HomeArticleModel, pk=pk)
-    context['blog_post'] = blog_post
+    comments = ReviewsModel.objects.filter(article_id=pk)
+
+    if request.method == 'POST':
+        form = ReviewsFrom(request.POST)
+        user = request.user
+
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.article = blog_post
+            obj.author = user
+            obj.save()
+            # return redirect('detail_home_view', pk=blog_post.pk)
+            return redirect(f'{request.path}')
+
+
+    else:
+        form = ReviewsFrom()
+    context = {
+        'blog_post': blog_post,
+        'comments': comments
+    }
 
     return render(request, 'CRUD/detail.html', context)
-
 
 def detail_home_carousel(request, pk):
     context = {}
@@ -145,7 +162,7 @@ def delete_home_view(request, pk):
 
 
 
-class AddReview(View):
+# class AddReview(View):
 
 
     # def post(self, request, pk):
@@ -161,11 +178,13 @@ class AddReview(View):
     #     return redirect('/')
 
 
-    def post(self, request, pk):
-        form = ReviewsFrom(request.POST)
-        article = HomeArticleModel.objects.get(pk=pk)
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.article = article
-            form.save()
-        return redirect('/')
+    # def post(self, request, pk):
+    #     form = ReviewsFrom(request.POST)
+    #     article = HomeArticleModel.objects.get(pk=pk)
+    #     if form.is_valid():
+    #         form = form.save(commit=False)
+    #         form.article = article
+    #         form.save()
+    #     return redirect('/')
+
+

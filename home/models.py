@@ -4,8 +4,6 @@ from django.db import models
 
 # Create your models here.
 from django.urls import reverse
-
-import accounts
 from Blogs import settings
 from accounts.models import Account
 
@@ -68,8 +66,5 @@ class ReviewsModel(models.Model):
     article = models.ForeignKey(HomeArticleModel, verbose_name='Film', on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.author) and str(self.article)
+        return str(self.author)
 
-    # class Meta:
-    #     verbose_name = "Comment"
-    #     verbose_name_plural = "Comment"

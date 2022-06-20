@@ -168,7 +168,7 @@
                 </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="#" class="nav-link px-2 text-secondary">Главная</a></li>
+                    <li><a href="{% url 'home' %}" class="nav-link px-2 text-secondary">Главная</a></li>
                     <li><a href="#" class="nav-link px-2 text-white">Фильмы</a></li>
                     <li><a href="#" class="nav-link px-2 text-white">Сериалы</a></li>
                     <li><a href="#" class="nav-link px-2 text-white">Мультфильмы</a></li>
@@ -182,8 +182,7 @@
                     </a>
                     <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
                         <li><a class="dropdown-item" href="{% url 'update' user.id %}">New project...</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'home:create' %}">Add New Blog</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{% url 'signout' %} ">Sign out</a></li>
                     </ul>
