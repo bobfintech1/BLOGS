@@ -21,6 +21,8 @@ def home_list(request,):
     home1 = HomeArticleModel.objects.all()
     home = HomeCarouselModel.objects.all()
 
+
+
     context = {
         'home_post': home1,
         'home_blog': home
@@ -35,7 +37,7 @@ def paginate(request):
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'paginate.html', {'page_obj': page_obj})
+    return render(request, 'paginate.html',)
 
 
 
