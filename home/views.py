@@ -16,28 +16,39 @@ from home.forms import CreateHomeForm, ReviewsFrom, HomeDeleteForm
 
 #
 
-def home_list(request,):
+def home_list(request, pk):
     context = {}
+
+    user = request.user
     home1 = HomeArticleModel.objects.all()
     home = HomeCarouselModel.objects.all()
 
+    data = HomeArticleModel.objects.all()
+    paginator = Paginator(data, 3)
 
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     context = {
         'home_post': home1,
-        'home_blog': home
+        'home_blog': home,
+        'page_obj': page_obj
     }
 
     return render(request, "home.html", context)
 
 
 def paginate(request):
+
     contact_list = HomeArticleModel.objects.all()
     paginator = Paginator(contact_list, 1)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'paginate.html',)
+    context = {
+        'page_obj': page_obj
+    }
+    return render(request, 'paginate.html',context)
 
 
 
@@ -63,6 +74,7 @@ def home_create(request):
         instance = CreateHomeForm()
 
     return render(request, 'CRUD/create.html', {'form': instance})
+
 
 def detail_home_view(request, pk):
     blog_post = get_object_or_404(HomeArticleModel, pk=pk)
