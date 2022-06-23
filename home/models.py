@@ -43,12 +43,14 @@ class HomeArticleModel(models.Model):
     body = models.TextField()
     image = models.ImageField(upload_to=upload_location, null=True, blank=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.title)
 
-    def get_absolute_url(self):
-        return reverse('home:home_list')
+    class Meta:
+        ordering = ('-created_date',)
 
 
     @property
@@ -64,7 +66,13 @@ class ReviewsModel(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='comment', on_delete=models.SET_NULL, null=True)
     text = models.TextField('Comment', max_length=5000)
     article = models.ForeignKey(HomeArticleModel, verbose_name='Film', on_delete=models.CASCADE)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
 
     def __str__(self):
         return str(self.author)
+
+    class Meta:
+        ordering = ('-date_created',)
 

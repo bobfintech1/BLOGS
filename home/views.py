@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -15,26 +16,27 @@ from home.forms import CreateHomeForm, ReviewsFrom, HomeDeleteForm
 #     context_object_name = 'home_post'
 
 #
-
-def home_list(request, pk):
+@login_required
+def home_list(request):
     context = {}
-
     user = request.user
-    home1 = HomeArticleModel.objects.all()
+    count = Account.objects.filter(id=user.id)
+    home1 = HomeArticleModel.objects.filter(id=user.id)
+
     home = HomeCarouselModel.objects.all()
 
-    data = HomeArticleModel.objects.all()
+    data = HomeArticleModel.objects.filter(author=user.id)
     paginator = Paginator(data, 3)
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     context = {
+        'count': count,
         'home_post': home1,
         'home_blog': home,
         'page_obj': page_obj
     }
-
     return render(request, "home.html", context)
 
 
@@ -81,7 +83,7 @@ def detail_home_view(request, pk):
     comments = ReviewsModel.objects.filter(article_id=pk)
 
     if request.method == 'POST':
-        form = ReviewsFrom(request.POST)
+        form = ReviewsFrom(data=request.POST)
         user = request.user
 
         if form.is_valid():
