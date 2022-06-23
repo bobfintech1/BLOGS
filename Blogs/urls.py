@@ -33,6 +33,8 @@ urlpatterns = [
 
 
 
+
+    path('api/account/', include('accounts.api.urls', 'accounts_api')),
     path('home/', include('home.urls', namespace='home_main')),
 
 ] + i18n_patterns(

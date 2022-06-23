@@ -35,7 +35,7 @@ class Account(AbstractBaseUser):
     phone_number = models.CharField(max_length=15, unique=True)
     f_name = models.CharField(max_length=50, blank=True, null=True)
     l_name = models.CharField(max_length=50, blank=True, null=True)
-    sex = models.CharField(max_length=50,  blank=True, null=True)
+    sex = models.BooleanField(default=False)
     date_birthday = models.DateTimeField(blank=True, null=True)
 
     is_admin = models.BooleanField(default=True)

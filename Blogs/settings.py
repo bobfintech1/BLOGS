@@ -42,6 +42,8 @@ INSTALLED_APPS = [
 
     'accounts.apps.AccountsConfig',
     'home.apps.HomeConfig',
+    'rest_framework',
+    'rest_framework.authtoken',
 
 ]
 
