@@ -35,7 +35,7 @@ urlpatterns = [
 
 
     path('api/account/', include('accounts.api.urls', 'accounts_api')),
-    path('home/', include('home.urls', namespace='home_main')),
+    path('api/home/', include('home.api.urls', namespace='home_api')),
 
 ] + i18n_patterns(
     path('i18n/', include('django.conf.urls.i18n')),
