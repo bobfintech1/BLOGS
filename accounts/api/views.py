@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.authtoken.models import Token
 
-from accounts.api.serializers import RegistrationSerializer, AccountPropertiesSerializers
+from accounts.api.serializers import RegistrationSerializer, AccountsPropertiesSerializers
 from accounts.models import Account
 
 
@@ -17,11 +17,10 @@ def registration_view(request):
         data = {}
         if serializer.is_valid():
             account = serializer.save()
-            data['response'] = "successfully registered a new user."
+            data['response'] = "успешно зарегистрировал нового пользователя."
             data['email'] = account.email
             data['phone_number'] = account.phone_number
-            token = Token.objects.get(user=account)
-            print(token.key)
+            token = Token.objects.get(user=account).key
             data['token'] = token
         else:
             data = serializer.errors
@@ -30,15 +29,16 @@ def registration_view(request):
 
 @api_view(['GET',])
 @permission_classes((IsAuthenticated,))
-def account_properties_view(request):
+def account_detail_view(request):
     try:
         account = request.user
     except Account.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = AccountPropertiesSerializers(account)
+        serializer = AccountsPropertiesSerializers(account)
         return Response(serializer.data)
+
 
 @api_view(['PUT',])
 @permission_classes((IsAuthenticated,))
@@ -49,10 +49,10 @@ def update_account_view(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'PUT':
-        serializer = AccountPropertiesSerializers(account, data=request.data)
+        serializer = AccountsPropertiesSerializers(account, data=request.data)
         data = {}
         if serializer.is_valid():
             serializer.save()
-            data['response'] = "Account update success"
+            data['response'] = "Аккаунт успешно обновлен"
             return Response(data=data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
