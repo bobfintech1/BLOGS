@@ -4,12 +4,12 @@ from home.models import *
 
 class HomePostSerializer(serializers.ModelSerializer):
 
-    email = serializers.SerializerMethodField('get_username_from_author')
+    # email = serializers.SerializerMethodField('get_username_from_author')
 
     class Meta:
         model = HomeArticleModel
-        fields = ['title', 'body', 'image', 'date_updated', 'email']
+        fields = ['title', 'body', 'image', 'date_updated']
 
-    def get_username_from_author(self, home_post):
-        email = home_post.author.email
-        return email
+    # def get_username_from_author(self, home_post):
+    #     email = home_post.author.email
+    #     return email

@@ -1,5 +1,7 @@
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from home.api.serializers import HomePostSerializer
@@ -8,11 +10,15 @@ from django.shortcuts import get_object_or_404
 
 @api_view(['GET'])
 def home_api_view(request):
+    paginator = PageNumberPagination()
+    paginator.page_size = 1
     blogs = HomeArticleModel.objects.all()
+    blogs = paginator.paginate_queryset(blogs, request)
     serializer = HomePostSerializer(blogs, many=True)
-    return Response(serializer.data)
+    return paginator.get_paginated_response(serializer.data)
 
 @api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
 def create_home_api(request):
     serializer = HomePostSerializer(data=request.data)
     if serializer.is_valid():
