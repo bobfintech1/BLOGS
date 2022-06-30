@@ -13,3 +13,10 @@ class HomePostSerializer(serializers.ModelSerializer):
     # def get_username_from_author(self, home_post):
     #     email = home_post.author.email
     #     return email
+
+
+class ReviewsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ReviewsModel
+        fields = '__all__'

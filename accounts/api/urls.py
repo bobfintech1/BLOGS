@@ -6,7 +6,7 @@ app_name = "accounts"
 
 urlpatterns = [
     path('register', registration_view, name="register"),
-    path('detail', account_detail_view, name="properties"),
-    path('update', update_account_view, name="properties"),
+    path('detail', account_detail_view, name="detail"),
+    path('update', update_account_view, name="update"),
     path('login', obtain_auth_token, name="login"),
 ]
