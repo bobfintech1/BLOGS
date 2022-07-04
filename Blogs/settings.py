@@ -26,12 +26,14 @@ SECRET_KEY = 'django-insecure-4!*3))^e)1b)h!_u#p@3&dxok8pa*lruv77@$jh@=@c+r4gywm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,7 +46,6 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'rest_framework',
     'rest_framework.authtoken',
-    'whitenoise.runserver_nostatic'
 
 ]
 
@@ -74,9 +75,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ALLOWED_HOSTS = ['*']
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 ROOT_URLCONF = 'Blogs.urls'
@@ -186,3 +185,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR / 'media_cdn')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'home'
+WHITENOISE_USE_FINDERS = True
