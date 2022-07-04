@@ -1,4 +1,4 @@
-from rest_framework import status
+nhhmjfrom rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
@@ -80,16 +80,15 @@ def comments_home_view(request, pk):
 @api_view(['GET', 'POST'])
 def comment_create_view(request):
     user = request.user
-
     if request.method == 'GET':
         snippets = HomeArticleModel.objects.all()
         serializer = HomePostSerializer(snippets, many=True)
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        serializer = ReviewsSerializer(data=request.data)
+        comment = ReviewsModel(author=user)
+        serializer = ReviewsSerializer(comment, data=request.data)
         serializer.author = user
-        serializer.article = serializer
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

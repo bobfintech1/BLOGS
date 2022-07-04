@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView
 from accounts.models import Account
-from home.models import HomeArticleModel, HomeCarouselModel, ReviewsModel
+from home.models import HomeArticleModel, ReviewsModel
 from home.forms import CreateHomeForm, ReviewsFrom, HomeDeleteForm
 
 
@@ -23,7 +23,6 @@ def home_list(request):
     count = Account.objects.filter(id=user.id)
     home1 = HomeArticleModel.objects.filter(id=user.id)
 
-    home = HomeCarouselModel.objects.all()
 
     data = HomeArticleModel.objects.filter(author=user.id)
     paginator = Paginator(data, 3)
@@ -34,7 +33,6 @@ def home_list(request):
     context = {
         'count': count,
         'home_post': home1,
-        'home_blog': home,
         'page_obj': page_obj
     }
     return render(request, "home.html", context)
