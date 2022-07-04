@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'rest_framework',
     'rest_framework.authtoken',
-    ''
+    'whitenoise.runserver_nostatic'
+
 ]
 
 REST_FRAMEWORK = {
