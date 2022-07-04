@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'rest_framework',
     'rest_framework.authtoken',
+    ''
 ]
 
 REST_FRAMEWORK = {
@@ -73,6 +74,9 @@ MIDDLEWARE = [
 ]
 
 ALLOWED_HOSTS = ['*']
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 
 ROOT_URLCONF = 'Blogs.urls'
 
